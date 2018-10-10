@@ -43,7 +43,6 @@ import tarfile
 from six.moves import urllib
 import tensorflow as tf
 
-import cifar10_input
 
 FLAGS = tf.app.flags.FLAGS
 
@@ -55,11 +54,11 @@ tf.app.flags.DEFINE_string('data_dir', '/tmp/cifar10_data',
 tf.app.flags.DEFINE_boolean('use_fp16', False,
                             """Train the model using fp16.""")
 
-# Global constants describing the CIFAR-10 data set.
-IMAGE_SIZE = cifar10_input.IMAGE_SIZE
-NUM_CLASSES = cifar10_input.NUM_CLASSES
-NUM_EXAMPLES_PER_EPOCH_FOR_TRAIN = cifar10_input.NUM_EXAMPLES_PER_EPOCH_FOR_TRAIN
-NUM_EXAMPLES_PER_EPOCH_FOR_EVAL = cifar10_input.NUM_EXAMPLES_PER_EPOCH_FOR_EVAL
+# # Global constants describing the CIFAR-10 data set.
+# IMAGE_SIZE = cifar10_input.IMAGE_SIZE
+# NUM_CLASSES = cifar10_input.NUM_CLASSES
+# NUM_EXAMPLES_PER_EPOCH_FOR_TRAIN = cifar10_input.NUM_EXAMPLES_PER_EPOCH_FOR_TRAIN
+# NUM_EXAMPLES_PER_EPOCH_FOR_EVAL = cifar10_input.NUM_EXAMPLES_PER_EPOCH_FOR_EVAL
 
 
 # Constants describing the training process.
@@ -73,7 +72,7 @@ INITIAL_LEARNING_RATE = 0.1       # Initial learning rate.
 # names of the summaries when visualizing a model.
 TOWER_NAME = 'tower'
 
-DATA_URL = 'https://www.cs.toronto.edu/~kriz/cifar-10-binary.tar.gz'
+# DATA_URL = 'https://www.cs.toronto.edu/~kriz/cifar-10-binary.tar.gz'
 
 
 def _activation_summary(x):
@@ -139,50 +138,50 @@ def _variable_with_weight_decay(name, shape, stddev, wd):
   return var
 
 
-def distorted_inputs():
-  """Construct distorted input for CIFAR training using the Reader ops.
+# def distorted_inputs():
+#   """Construct distorted input for CIFAR training using the Reader ops.
+#
+#   Returns:
+#     images: Images. 4D tensor of [batch_size, IMAGE_SIZE, IMAGE_SIZE, 3] size.
+#     labels: Labels. 1D tensor of [batch_size] size.
+#
+#   Raises:
+#     ValueError: If no data_dir
+#   """
+#   if not FLAGS.data_dir:
+#     raise ValueError('Please supply a data_dir')
+#   data_dir = os.path.join(FLAGS.data_dir, 'cifar-10-batches-bin')
+#   images, labels = cifar10_input.distorted_inputs(data_dir=data_dir,
+#                                                   batch_size=FLAGS.batch_size)
+#   if FLAGS.use_fp16:
+#     images = tf.cast(images, tf.float16)
+#     labels = tf.cast(labels, tf.float16)
+#   return images, labels
 
-  Returns:
-    images: Images. 4D tensor of [batch_size, IMAGE_SIZE, IMAGE_SIZE, 3] size.
-    labels: Labels. 1D tensor of [batch_size] size.
-
-  Raises:
-    ValueError: If no data_dir
-  """
-  if not FLAGS.data_dir:
-    raise ValueError('Please supply a data_dir')
-  data_dir = os.path.join(FLAGS.data_dir, 'cifar-10-batches-bin')
-  images, labels = cifar10_input.distorted_inputs(data_dir=data_dir,
-                                                  batch_size=FLAGS.batch_size)
-  if FLAGS.use_fp16:
-    images = tf.cast(images, tf.float16)
-    labels = tf.cast(labels, tf.float16)
-  return images, labels
-
-
-def inputs(eval_data):
-  """Construct input for CIFAR evaluation using the Reader ops.
-
-  Args:
-    eval_data: bool, indicating if one should use the train or eval data set.
-
-  Returns:
-    images: Images. 4D tensor of [batch_size, IMAGE_SIZE, IMAGE_SIZE, 3] size.
-    labels: Labels. 1D tensor of [batch_size] size.
-
-  Raises:
-    ValueError: If no data_dir
-  """
-  if not FLAGS.data_dir:
-    raise ValueError('Please supply a data_dir')
-  data_dir = os.path.join(FLAGS.data_dir, 'cifar-10-batches-bin')
-  images, labels = cifar10_input.inputs(eval_data=eval_data,
-                                        data_dir=data_dir,
-                                        batch_size=FLAGS.batch_size)
-  if FLAGS.use_fp16:
-    images = tf.cast(images, tf.float16)
-    labels = tf.cast(labels, tf.float16)
-  return images, labels
+#
+# def inputs(eval_data):
+#   """Construct input for CIFAR evaluation using the Reader ops.
+#
+#   Args:
+#     eval_data: bool, indicating if one should use the train or eval data set.
+#
+#   Returns:
+#     images: Images. 4D tensor of [batch_size, IMAGE_SIZE, IMAGE_SIZE, 3] size.
+#     labels: Labels. 1D tensor of [batch_size] size.
+#
+#   Raises:
+#     ValueError: If no data_dir
+#   """
+#   if not FLAGS.data_dir:
+#     raise ValueError('Please supply a data_dir')
+#   data_dir = os.path.join(FLAGS.data_dir, 'cifar-10-batches-bin')
+#   images, labels = cifar10_input.inputs(eval_data=eval_data,
+#                                         data_dir=data_dir,
+#                                         batch_size=FLAGS.batch_size)
+#   if FLAGS.use_fp16:
+#     images = tf.cast(images, tf.float16)
+#     labels = tf.cast(labels, tf.float16)
+#   return images, labels
 
 
 from Xception import *
@@ -201,7 +200,6 @@ def inference(images):
   # by replacing all instances of tf.get_variable() with tf.Variable().
   #
   softmax_linear = XceptionModel(images, 200, is_training=True, data_format='channels_last')
-  accuracy = tf.reduce_mean(tf.cast(tf.equal(tf.arg_max(logits, 1), labels), tf.float32))
 
   return softmax_linear
 
@@ -257,76 +255,76 @@ def _add_loss_summaries(total_loss):
   return loss_averages_op
 
 
-def train(total_loss, global_step):
-  """Train CIFAR-10 model.
-
-  Create an optimizer and apply to all trainable variables. Add moving
-  average for all trainable variables.
-
-  Args:
-    total_loss: Total loss from loss().
-    global_step: Integer Variable counting the number of training steps
-      processed.
-  Returns:
-    train_op: op for training.
-  """
-  # Variables that affect learning rate.
-  num_batches_per_epoch = NUM_EXAMPLES_PER_EPOCH_FOR_TRAIN / FLAGS.batch_size
-  decay_steps = int(num_batches_per_epoch * NUM_EPOCHS_PER_DECAY)
-
-  # Decay the learning rate exponentially based on the number of steps.
-  lr = tf.train.exponential_decay(INITIAL_LEARNING_RATE,
-                                  global_step,
-                                  decay_steps,
-                                  LEARNING_RATE_DECAY_FACTOR,
-                                  staircase=True)
-  tf.summary.scalar('learning_rate', lr)
-
-  # Generate moving averages of all losses and associated summaries.
-  loss_averages_op = _add_loss_summaries(total_loss)
-
-  # Compute gradients.
-  with tf.control_dependencies([loss_averages_op]):
-    opt = tf.train.GradientDescentOptimizer(lr)
-    grads = opt.compute_gradients(total_loss)
-
-  # Apply gradients.
-  apply_gradient_op = opt.apply_gradients(grads, global_step=global_step)
-
-  # Add histograms for trainable variables.
-  for var in tf.trainable_variables():
-    tf.summary.histogram(var.op.name, var)
-
-  # Add histograms for gradients.
-  for grad, var in grads:
-    if grad is not None:
-      tf.summary.histogram(var.op.name + '/gradients', grad)
-
-  # Track the moving averages of all trainable variables.
-  variable_averages = tf.train.ExponentialMovingAverage(
-      MOVING_AVERAGE_DECAY, global_step)
-  with tf.control_dependencies([apply_gradient_op]):
-    variables_averages_op = variable_averages.apply(tf.trainable_variables())
-
-  return variables_averages_op
-
-
-def maybe_download_and_extract():
-  """Download and extract the tarball from Alex's website."""
-  dest_directory = FLAGS.data_dir
-  if not os.path.exists(dest_directory):
-    os.makedirs(dest_directory)
-  filename = DATA_URL.split('/')[-1]
-  filepath = os.path.join(dest_directory, filename)
-  if not os.path.exists(filepath):
-    def _progress(count, block_size, total_size):
-      sys.stdout.write('\r>> Downloading %s %.1f%%' % (filename,
-          float(count * block_size) / float(total_size) * 100.0))
-      sys.stdout.flush()
-    filepath, _ = urllib.request.urlretrieve(DATA_URL, filepath, _progress)
-    print()
-    statinfo = os.stat(filepath)
-    print('Successfully downloaded', filename, statinfo.st_size, 'bytes.')
-  extracted_dir_path = os.path.join(dest_directory, 'cifar-10-batches-bin')
-  if not os.path.exists(extracted_dir_path):
-    tarfile.open(filepath, 'r:gz').extractall(dest_directory)
+# def train(total_loss, global_step):
+#   """Train CIFAR-10 model.
+#
+#   Create an optimizer and apply to all trainable variables. Add moving
+#   average for all trainable variables.
+#
+#   Args:
+#     total_loss: Total loss from loss().
+#     global_step: Integer Variable counting the number of training steps
+#       processed.
+#   Returns:
+#     train_op: op for training.
+#   """
+#   # Variables that affect learning rate.
+#   num_batches_per_epoch = NUM_EXAMPLES_PER_EPOCH_FOR_TRAIN / FLAGS.batch_size
+#   decay_steps = int(num_batches_per_epoch * NUM_EPOCHS_PER_DECAY)
+#
+#   # Decay the learning rate exponentially based on the number of steps.
+#   lr = tf.train.exponential_decay(INITIAL_LEARNING_RATE,
+#                                   global_step,
+#                                   decay_steps,
+#                                   LEARNING_RATE_DECAY_FACTOR,
+#                                   staircase=True)
+#   tf.summary.scalar('learning_rate', lr)
+#
+#   # Generate moving averages of all losses and associated summaries.
+#   loss_averages_op = _add_loss_summaries(total_loss)
+#
+#   # Compute gradients.
+#   with tf.control_dependencies([loss_averages_op]):
+#     opt = tf.train.GradientDescentOptimizer(lr)
+#     grads = opt.compute_gradients(total_loss)
+#
+#   # Apply gradients.
+#   apply_gradient_op = opt.apply_gradients(grads, global_step=global_step)
+#
+#   # Add histograms for trainable variables.
+#   for var in tf.trainable_variables():
+#     tf.summary.histogram(var.op.name, var)
+#
+#   # Add histograms for gradients.
+#   for grad, var in grads:
+#     if grad is not None:
+#       tf.summary.histogram(var.op.name + '/gradients', grad)
+#
+#   # Track the moving averages of all trainable variables.
+#   variable_averages = tf.train.ExponentialMovingAverage(
+#       MOVING_AVERAGE_DECAY, global_step)
+#   with tf.control_dependencies([apply_gradient_op]):
+#     variables_averages_op = variable_averages.apply(tf.trainable_variables())
+#
+#   return variables_averages_op
+#
+#
+# def maybe_download_and_extract():
+#   """Download and extract the tarball from Alex's website."""
+#   dest_directory = FLAGS.data_dir
+#   if not os.path.exists(dest_directory):
+#     os.makedirs(dest_directory)
+#   filename = DATA_URL.split('/')[-1]
+#   filepath = os.path.join(dest_directory, filename)
+#   if not os.path.exists(filepath):
+#     def _progress(count, block_size, total_size):
+#       sys.stdout.write('\r>> Downloading %s %.1f%%' % (filename,
+#           float(count * block_size) / float(total_size) * 100.0))
+#       sys.stdout.flush()
+#     filepath, _ = urllib.request.urlretrieve(DATA_URL, filepath, _progress)
+#     print()
+#     statinfo = os.stat(filepath)
+#     print('Successfully downloaded', filename, statinfo.st_size, 'bytes.')
+#   extracted_dir_path = os.path.join(dest_directory, 'cifar-10-batches-bin')
+#   if not os.path.exists(extracted_dir_path):
+#     tarfile.open(filepath, 'r:gz').extractall(dest_directory)
