@@ -11,10 +11,8 @@ import tensorflow as tf
 import numpy as np
 
 
-# def init_PGD(loss, x_input):
-#     return tf.gradients(loss, x_input)[0]
 
-def get_PGD(sess, adv_grad, x_input_pl, y_input_pl, x_nat, y, epsilon, a, k, rand):
+def get_PGD(sess, adv_grad, x_input_pl, y_input_pl, x_nat, y, epsilon=0.03, a=0.01, k=10, rand=True):
   """Given a set of examples (x_nat, y), returns a set of adversarial
      examples within epsilon of x_nat in l_infinity norm."""
   if rand:

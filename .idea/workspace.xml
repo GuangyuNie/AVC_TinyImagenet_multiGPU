@@ -1,7 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="8f61d8df-02b7-4188-a67b-88383b8be9c9" name="Default" comment="" />
+    <list default="true" id="8f61d8df-02b7-4188-a67b-88383b8be9c9" name="Default" comment="">
+      <change beforePath="" afterPath="$PROJECT_DIR$/README.MD" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/train_multiGPU.py" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change beforePath="$PROJECT_DIR$/BUILD" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/README.md" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/multi_gpu_train.py" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/pgd_attack.py" afterPath="$PROJECT_DIR$/pgd_attack.py" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -9,23 +17,40 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="FavoritesManager">
+    <favorites_list name="AVC_Madry_multiGPU" />
+  </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="multi_gpu_train.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/../AVC_Madry_multiGPU/multi_gpu_train.py">
+      <file leaf-file-name="train_multiGPU.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/train_multiGPU.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="525">
-              <caret line="240" column="16" lean-forward="false" selection-start-line="240" selection-start-column="16" selection-end-line="240" selection-end-column="16" />
+            <state relative-caret-position="102">
+              <caret line="260" column="13" lean-forward="true" selection-start-line="260" selection-start-column="13" selection-end-line="260" selection-end-column="13" />
               <folding>
-                <element signature="e#1545#1583#0" expanded="true" />
-                <element signature="e#9099#9120#0" expanded="false" />
+                <element signature="e#1544#1582#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="README.MD" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/README.MD">
+          <provider selected="true" editor-type-id="split-provider[text-editor;MarkdownPreviewEditor]">
+            <state split_layout="SPLIT">
+              <first_editor relative-caret-position="0">
+                <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+                <folding />
+              </first_editor>
+              <second_editor>
+                <js_state />
+              </second_editor>
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name=".gitignore" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../AVC_Madry_multiGPU/.gitignore">
+        <entry file="file://$PROJECT_DIR$/.gitignore">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="36">
               <caret line="2" column="21" lean-forward="false" selection-start-line="2" selection-start-column="21" selection-end-line="2" selection-end-column="21" />
@@ -35,9 +60,9 @@
         </entry>
       </file>
       <file leaf-file-name="model.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../AVC_Madry_multiGPU/model.py">
+        <entry file="file://$PROJECT_DIR$/model.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="260">
+            <state relative-caret-position="-1933">
               <caret line="74" column="10" lean-forward="false" selection-start-line="74" selection-start-column="2" selection-end-line="74" selection-end-column="10" />
               <folding>
                 <element signature="e#1259#1297#0" expanded="true" />
@@ -48,10 +73,10 @@
         </entry>
       </file>
       <file leaf-file-name="utils_multiGPU.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../AVC_Madry_multiGPU/utils_multiGPU.py">
+        <entry file="file://$PROJECT_DIR$/utils_multiGPU.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="380">
-              <caret line="67" column="42" lean-forward="false" selection-start-line="67" selection-start-column="4" selection-end-line="67" selection-end-column="42" />
+            <state relative-caret-position="446">
+              <caret line="70" column="56" lean-forward="false" selection-start-line="70" selection-start-column="56" selection-end-line="70" selection-end-column="56" />
               <folding>
                 <element signature="e#0#12#0" expanded="true" />
               </folding>
@@ -60,19 +85,19 @@
         </entry>
       </file>
       <file leaf-file-name="pgd_attack.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../AVC_Madry_multiGPU/pgd_attack.py">
+        <entry file="file://$PROJECT_DIR$/pgd_attack.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="180">
-              <caret line="15" column="0" lean-forward="false" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
+              <caret line="15" column="5" lean-forward="true" selection-start-line="15" selection-start-column="5" selection-end-line="15" selection-end-column="5" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
       <file leaf-file-name="Xception.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../AVC_Madry_multiGPU/Xception.py">
+        <entry file="file://$PROJECT_DIR$/Xception.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="355">
+            <state relative-caret-position="810">
               <caret line="45" column="31" lean-forward="false" selection-start-line="45" selection-start-column="31" selection-end-line="45" selection-end-column="31" />
               <folding />
             </state>
@@ -82,7 +107,7 @@
       <file leaf-file-name="convolutional.py" pinned="false" current-in-tab="false">
         <entry file="file://$USER_HOME$/anaconda2/lib/python2.7/site-packages/tensorflow/python/layers/convolutional.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="629">
+            <state relative-caret-position="16776">
               <caret line="951" column="69" lean-forward="false" selection-start-line="951" selection-start-column="4" selection-end-line="951" selection-end-column="69" />
               <folding />
             </state>
@@ -92,7 +117,7 @@
       <file leaf-file-name="session.py" pinned="false" current-in-tab="false">
         <entry file="file://$USER_HOME$/anaconda2/lib/python2.7/site-packages/tensorflow/python/client/session.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="182">
+            <state relative-caret-position="20412">
               <caret line="1151" column="0" lean-forward="false" selection-start-line="1151" selection-start-column="0" selection-end-line="1151" selection-end-column="0" />
               <folding />
             </state>
@@ -110,11 +135,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>p</find>
-      <find>get_</find>
-      <find>reuse</find>
-      <find>sparse_softmax_cross_entropy</find>
-      <find>filters</find>
       <find>losses</find>
       <find>TOWER_NAME</find>
       <find>batch_queue</find>
@@ -139,8 +159,16 @@
       <find>accura</find>
       <find>_variable_with_weight_decay</find>
       <find>DATA_URL</find>
+      <find>train_images</find>
+      <find>max_steps</find>
+      <find>itr_per_epoch</find>
+      <find>rest</find>
       <find>saver</find>
+      <find>feed_dict</find>
     </findStrings>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
@@ -148,20 +176,24 @@
         <option value="$PROJECT_DIR$/cifar10_multi_gpu_train.py" />
         <option value="$PROJECT_DIR$/model.py" />
         <option value="$PROJECT_DIR$/Xception.py" />
+        <option value="$PROJECT_DIR$/utils_multiGPU.py" />
+        <option value="$PROJECT_DIR$/model.py" />
+        <option value="$PROJECT_DIR$/.gitignore" />
+        <option value="$PROJECT_DIR$/pgd_attack.py" />
         <option value="$PROJECT_DIR$/multi_gpu_train.py" />
-        <option value="$PROJECT_DIR$/../AVC_Madry_multiGPU/pgd_attack.py" />
-        <option value="$PROJECT_DIR$/../AVC_Madry_multiGPU/utils_multiGPU.py" />
-        <option value="$PROJECT_DIR$/../AVC_Madry_multiGPU/model.py" />
-        <option value="$PROJECT_DIR$/../AVC_Madry_multiGPU/multi_gpu_train.py" />
-        <option value="$PROJECT_DIR$/../AVC_Madry_multiGPU/.gitignore" />
+        <option value="$PROJECT_DIR$/multi_gpu_train.py" />
+        <option value="$PROJECT_DIR$/train_multiGPU.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="1984" />
+    <option name="x" value="64" />
     <option name="y" value="-4" />
     <option name="width" value="1857" />
     <option name="height" value="1085" />
+  </component>
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="1" id="Add" />
   </component>
   <component name="ProjectView">
     <navigator currentView="ProjectPane" proportions="" version="1">
@@ -179,27 +211,27 @@
     </navigator>
     <panes>
       <pane id="Scratches" />
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
             <path>
-              <item name="NIPS_Madry_multiGPU" type="b2602c69:ProjectViewProjectNode" />
+              <item name="AVC_Madry_multiGPU" type="b2602c69:ProjectViewProjectNode" />
               <item name="AVC_Madry_multiGPU" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../AVC_Madry_multiGPU_pretrain" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/../AVC_Madry_multiGPU" />
+      <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$" />
     </key>
   </component>
@@ -215,7 +247,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.multi_gpu_train">
+  <component name="RunManager" selected="Python.cifar10_multi_gpu_train">
     <configuration name="cifar10_multi_gpu_train" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -228,7 +260,7 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="cifar10" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/multi_gpu_train.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/train_multiGPU.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -241,12 +273,12 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/../AVC_Madry_multiGPU" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="cifar10" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/../AVC_Madry_multiGPU/multi_gpu_train.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/train_multiGPU.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -258,8 +290,8 @@
     </list>
     <recent_temporary>
       <list size="2">
-        <item index="0" class="java.lang.String" itemvalue="Python.multi_gpu_train" />
-        <item index="1" class="java.lang.String" itemvalue="Python.cifar10_multi_gpu_train" />
+        <item index="0" class="java.lang.String" itemvalue="Python.cifar10_multi_gpu_train" />
+        <item index="1" class="java.lang.String" itemvalue="Python.multi_gpu_train" />
       </list>
     </recent_temporary>
   </component>
@@ -280,19 +312,20 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="1984" y="-4" width="1857" height="1085" extended-state="6" />
+    <frame x="64" y="-4" width="1857" height="1085" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.16557378" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.16557378" sideWeight="0.4935305" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32968128" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32968128" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.36553785" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32968128" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4063745" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.46115538" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32968128" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3306773" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.29986963" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.16557378" sideWeight="0.5064695" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3934263" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -308,81 +341,152 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/../AVC_Madry_multiGPU/multi_gpu_train.py</url>
-          <line>217</line>
-          <option name="timeStamp" value="18" />
+          <url>file://$PROJECT_DIR$/train_multiGPU.py</url>
+          <line>212</line>
+          <option name="timeStamp" value="24" />
         </line-breakpoint>
       </breakpoints>
       <breakpoints-dialog>
         <breakpoints-dialog />
       </breakpoints-dialog>
-      <option name="time" value="19" />
+      <option name="time" value="25" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="debuggerHistoryManager">
     <expressions id="evaluateCodeFragment">
       <expression>
-        <expression-string>print('%s: step %d, loss = %.2f,  %.1f examples/sec' %(datetime.now(), step, loss_value, examples_per_sec))</expression-string>
+        <expression-string>sess.run(accuracy, feed_dict=feed_dict)</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>'%s: step %d, loss = %.2f,  %.1f examples/sec'%(datetime.now(), step, loss_value, examples_per_sec)</expression-string>
+        <expression-string>feed_dict = {image_batch_pl: x_batch_nat,
+             label_batch_pl: y_batch}
+sess.run(accuracy, feed_dict=feed_dict)</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>jjj = jj // 10  # test set is 10 times smaller than training set
-test_images[jjj * batch_size:(1 + jjj) * batch_size]</expression-string>
+        <expression-string>sess.run(accuracy, feed_dict=feed_dict_adv)</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>test_images[jjj * batch_size:(1 + jjj) * batch_size]</expression-string>
+        <expression-string>loss_value = sess.run(loss, feed_dict=feed_dict_adv)</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>tf.reduce_mean(accuracy)</expression-string>
+        <expression-string>sess.run(tf.all_variables()[1])</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>tf.reduce_mean(tf.concat(tf.expand_dims(accuracy,0),0))</expression-string>
+        <expression-string>sess.run(tf.all_variables()[1])[0,:,:,0].tolist()</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>tf.reduce_mean(tf.concate(tf.expand_dims(accuracy,0),0))</expression-string>
+        <expression-string>sess.run(tf.all_variables()[1])[0,:,:,0]</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>accuracy</expression-string>
+        <expression-string>tf.all_variables()[1]</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>saver.save(sess, os.path.join(log_dir, 'AVC_Madry_multiGPU.ckpt'))</expression-string>
+        <expression-string>tf.all_variables()</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
       </expression>
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/../AVC_Madry_multiGPU/multi_gpu_train.py">
+    <entry file="file://$PROJECT_DIR$/train_multiGPU.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#1545#1583#0" expanded="true" />
-            <element signature="e#9099#9120#0" expanded="false" />
+            <element signature="e#1544#1582#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../AVC_Madry_multiGPU/model.py">
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="36">
+          <caret line="2" column="21" lean-forward="false" selection-start-line="2" selection-start-column="21" selection-end-line="2" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/model.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1332">
+          <caret line="74" column="10" lean-forward="false" selection-start-line="74" selection-start-column="2" selection-end-line="74" selection-end-column="10" />
+          <folding>
+            <element signature="e#1259#1297#0" expanded="true" />
+            <element signature="e#4741#4766#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/utils_multiGPU.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1206">
+          <caret line="67" column="42" lean-forward="false" selection-start-line="67" selection-start-column="4" selection-end-line="67" selection-end-column="42" />
+          <folding>
+            <element signature="e#0#12#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pgd_attack.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="15" column="0" lean-forward="false" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Xception.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="810">
+          <caret line="45" column="31" lean-forward="false" selection-start-line="45" selection-start-column="31" selection-end-line="45" selection-end-column="31" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/anaconda2/lib/python2.7/site-packages/tensorflow/python/layers/convolutional.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="16776">
+          <caret line="951" column="69" lean-forward="false" selection-start-line="951" selection-start-column="4" selection-end-line="951" selection-end-column="69" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/anaconda2/lib/python2.7/site-packages/tensorflow/python/client/session.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="20412">
+          <caret line="1151" column="0" lean-forward="false" selection-start-line="1151" selection-start-column="0" selection-end-line="1151" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/train_multiGPU.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#1544#1582#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/model.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="3438">
           <caret line="203" column="0" lean-forward="false" selection-start-line="203" selection-start-column="0" selection-end-line="203" selection-end-column="0" />
@@ -393,14 +497,7 @@ test_images[jjj * batch_size:(1 + jjj) * batch_size]</expression-string>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../AVC_Madry_multiGPU/cifar10_input.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3348">
-          <caret line="186" column="61" lean-forward="false" selection-start-line="186" selection-start-column="61" selection-end-line="186" selection-end-column="61" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/cifar10_input.py" />
     <entry file="file:///usr/local/lib/python2.7/dist-packages/tensorflow/python/pywrap_tensorflow.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="281">
@@ -428,29 +525,20 @@ test_images[jjj * batch_size:(1 + jjj) * batch_size]</expression-string>
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="203">
           <caret line="865" column="6" lean-forward="false" selection-start-line="865" selection-start-column="6" selection-end-line="865" selection-end-column="6" />
-          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../AVC_Madry_multiGPU/cifar10_input.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3348">
-          <caret line="186" column="61" lean-forward="false" selection-start-line="186" selection-start-column="61" selection-end-line="186" selection-end-column="61" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/cifar10_input.py" />
     <entry file="file://$USER_HOME$/anaconda2/lib/python2.7/site-packages/tensorflow/python/ops/nn_ops.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="250">
           <caret line="1527" column="21" lean-forward="true" selection-start-line="1527" selection-start-column="21" selection-end-line="1527" selection-end-column="21" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$USER_HOME$/anaconda2/lib/python2.7/site-packages/tensorflow/python/layers/convolutional.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="629">
+        <state relative-caret-position="16776">
           <caret line="951" column="69" lean-forward="false" selection-start-line="951" selection-start-column="4" selection-end-line="951" selection-end-column="69" />
           <folding />
         </state>
@@ -474,24 +562,16 @@ test_images[jjj * batch_size:(1 + jjj) * batch_size]</expression-string>
     </entry>
     <entry file="file://$USER_HOME$/anaconda2/lib/python2.7/site-packages/tensorflow/python/client/session.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="182">
+        <state relative-caret-position="20412">
           <caret line="1151" column="0" lean-forward="false" selection-start-line="1151" selection-start-column="0" selection-end-line="1151" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../AVC_Madry_multiGPU/Xception.py">
+    <entry file="file://$PROJECT_DIR$/Xception.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="355">
+        <state relative-caret-position="810">
           <caret line="45" column="31" lean-forward="false" selection-start-line="45" selection-start-column="31" selection-end-line="45" selection-end-column="31" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../AVC_Madry_multiGPU/pgd_attack.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="15" column="0" lean-forward="false" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -500,7 +580,6 @@ test_images[jjj * batch_size:(1 + jjj) * batch_size]</expression-string>
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="282">
           <caret line="47" column="0" lean-forward="false" selection-start-line="47" selection-start-column="0" selection-end-line="47" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -520,19 +599,48 @@ test_images[jjj * batch_size:(1 + jjj) * batch_size]</expression-string>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../AVC_Madry_multiGPU/utils_multiGPU.py">
+    <entry file="file://$PROJECT_DIR$/.gitignore">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="380">
-          <caret line="67" column="42" lean-forward="false" selection-start-line="67" selection-start-column="4" selection-end-line="67" selection-end-column="42" />
+        <state relative-caret-position="36">
+          <caret line="2" column="21" lean-forward="false" selection-start-line="2" selection-start-column="21" selection-end-line="2" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.MD">
+      <provider selected="true" editor-type-id="split-provider[text-editor;MarkdownPreviewEditor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="0">
+            <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+            <folding />
+          </first_editor>
+          <second_editor>
+            <js_state />
+          </second_editor>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/utils_multiGPU.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="446">
+          <caret line="70" column="56" lean-forward="false" selection-start-line="70" selection-start-column="56" selection-end-line="70" selection-end-column="56" />
           <folding>
             <element signature="e#0#12#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../AVC_Madry_multiGPU/model.py">
+    <entry file="file://$PROJECT_DIR$/pgd_attack.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="260">
+        <state relative-caret-position="180">
+          <caret line="15" column="5" lean-forward="true" selection-start-line="15" selection-start-column="5" selection-end-line="15" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/model.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1933">
           <caret line="74" column="10" lean-forward="false" selection-start-line="74" selection-start-column="2" selection-end-line="74" selection-end-column="10" />
           <folding>
             <element signature="e#1259#1297#0" expanded="true" />
@@ -541,21 +649,12 @@ test_images[jjj * batch_size:(1 + jjj) * batch_size]</expression-string>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../AVC_Madry_multiGPU/.gitignore">
+    <entry file="file://$PROJECT_DIR$/train_multiGPU.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="36">
-          <caret line="2" column="21" lean-forward="false" selection-start-line="2" selection-start-column="21" selection-end-line="2" selection-end-column="21" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../AVC_Madry_multiGPU/multi_gpu_train.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="525">
-          <caret line="240" column="16" lean-forward="false" selection-start-line="240" selection-start-column="16" selection-end-line="240" selection-end-column="16" />
+        <state relative-caret-position="102">
+          <caret line="260" column="13" lean-forward="true" selection-start-line="260" selection-start-column="13" selection-end-line="260" selection-end-column="13" />
           <folding>
-            <element signature="e#1545#1583#0" expanded="true" />
-            <element signature="e#9099#9120#0" expanded="false" />
+            <element signature="e#1544#1582#0" expanded="true" />
           </folding>
         </state>
       </provider>
