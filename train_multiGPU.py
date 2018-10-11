@@ -1,40 +1,7 @@
-# Copyright 2015 The TensorFlow Authors. All Rights Reserved.
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-# ==============================================================================
+'''
+Multi GPU training for Xception on TinyImagenet with Madry's method
+'''
 
-"""A binary to train CIFAR-10 using multiple GPUs with synchronous updates.
-
-Accuracy:
-train_multiGPU.py achieves ~86% accuracy after 100K steps (256
-epochs of data) as judged by cifar10_eval.py.
-
-Speed: With batch_size 128.
-
-System        | Step Time (sec/batch)  |     Accuracy
---------------------------------------------------------------------
-1 Tesla K20m  | 0.35-0.60              | ~86% at 60K steps  (5 hours)
-1 Tesla K40m  | 0.25-0.35              | ~86% at 100K steps (4 hours)
-2 Tesla K20m  | 0.13-0.20              | ~84% at 30K steps  (2.5 hours)
-3 Tesla K20m  | 0.13-0.18              | ~84% at 30K steps
-4 Tesla K20m  | ~0.10                  | ~84% at 30K steps
-
-Usage:
-Please see the tutorial and website for how to download the CIFAR-10
-data set, compile the program and train the model.
-
-http://tensorflow.org/tutorials/deep_cnn/
-"""
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
@@ -151,12 +118,14 @@ def train():
                         adv_grads.append(adv_grad_i)
                         accuracy.append(acc_i)
 
-        batchnorm_updates_op = tf.group(*batchnorm_updates)
-        adv_grads = tf.concat(adv_grads, 0)
         accuracy = tf.reduce_mean(accuracy)
-        # We must calculate the mean of each gradient. Note that this is the
-        # synchronization point across all towers.
+        adv_grads = tf.concat(adv_grads, 0)
+        # mean of each gradient. synchronization point across all towers.
         grads = average_gradients(tower_grads)
+        # Apply the gradients to adjust the shared variables.
+        apply_gradient_op = opt.apply_gradients(grads, global_step=global_step)
+        batchnorm_updates_op = tf.group(*batchnorm_updates)
+        train_op = tf.group(apply_gradient_op, batchnorm_updates_op)
 
         ## SUMMARY
         # Add a summary to track the learning rate.
@@ -165,42 +134,33 @@ def train():
         for grad, var in grads:
             if grad is not None:
                 summaries.append(tf.summary.histogram(var.op.name + '/gradients', grad))
-        # Apply the gradients to adjust the shared variables.
-        apply_gradient_op = opt.apply_gradients(grads, global_step=global_step)
         # Add histograms for trainable variables.
         for var in tf.trainable_variables():
             summaries.append(tf.summary.histogram(var.op.name, var))
         # Build the summary operation from the last tower summaries.
         summary_op = tf.summary.merge(summaries)
-        # Track the moving averages of all trainable variables.
-        variable_averages = tf.train.ExponentialMovingAverage(model.MOVING_AVERAGE_DECAY, global_step)
-        variables_averages_op = variable_averages.apply(tf.trainable_variables())
-         #Group all updates to into a single train op.
-        update_ops = tf.get_collection(tf.GraphKeys.UPDATE_OPS)
-        with tf.control_dependencies(update_ops):
-            # train_op = tf.group(apply_gradient_op, batchnorm_updates_op, variables_averages_op)
-            train_op = tf.group(apply_gradient_op, variables_averages_op)
+
+
+        ## INIT
+        # Start running operations on the Graph. allow_soft_placement must be set to
+        # True to build towers on GPU, as some of the ops do not have GPU
+        # implementations.
+        # Build an initialization operation to run below.
+        sess = tf.Session(config=tf.ConfigProto(
+            allow_soft_placement=True,
+            log_device_placement=FLAGS.log_device_placement))
+        init = tf.global_variables_initializer()
+        sess.run(init)
+        summary_writer = tf.summary.FileWriter(FLAGS.train_dir, sess.graph)
 
         ## RESTORE
         # Create a saver. by Guangyu
         g_list = [op.name for op in tf.get_default_graph().get_operations() if op.op_def and op.op_def.name=='VariableV2']
-        not_restore = [str(g)+':0' for g in g_list if 'ExponentialMovingAverage' in g]
+        not_restore = [str(g)+':0' for g in g_list if 'xxx' in g]
         not_resotre = not_restore.append('global_step:0')
         restore_list = [v for v in tf.global_variables() if v.name not in not_restore]
         saver = tf.train.Saver(var_list = restore_list)
-        # Build an initialization operation to run below.
-        init = tf.global_variables_initializer()
-
-        ## INIT
-        sess = tf.Session(config=tf.ConfigProto(
-            allow_soft_placement=True,
-            log_device_placement=FLAGS.log_device_placement))
-        # Start running operations on the Graph. allow_soft_placement must be set to
-        # True to build towers on GPU, as some of the ops do not have GPU
-        # implementations.
-        sess.run(init)
-        summary_writer = tf.summary.FileWriter(FLAGS.train_dir, sess.graph)
-        # saver.restore(sess, "/home/hope-yao/Documents/models/tutorials/image/AVC_Madry_multiGPU_pretrain/model_save_base_final/center_loss.ckpt")
+        saver.restore(sess, "/home/hope-yao/Documents/models/tutorials/image/AVC_Madry_multiGPU_pretrain/model_save_base_final/center_loss.ckpt")
 
         ## LOAD DATA
         train_images, train_labels, test_images, test_labels = load_data()
@@ -229,8 +189,8 @@ def train():
                 feed_dict_adv = {image_batch_pl: x_batch_adv,
                                  label_batch_pl: y_batch,
                                  is_training_pl: True}
-                _, loss_value = sess.run([train_op, loss], feed_dict=feed_dict_adv)
-                # loss_value = sess.run(loss, feed_dict=feed_dict_adv)
+                # _, loss_value = sess.run([train_op, loss], feed_dict=feed_dict_adv)
+                loss_value = sess.run(loss, feed_dict=feed_dict)
 
                 if itr_i%10==0:
                     # output training
@@ -241,6 +201,9 @@ def train():
 
                 # output testing
                 if itr_i%100==0:
+                    feed_dict = {image_batch_pl: x_batch_nat,
+                                 label_batch_pl: y_batch,
+                                 is_training_pl: False}
                     x_batch_adv = get_PGD(sess, adv_grads, feed_dict, image_batch_pl)
                     feed_dict_adv = {image_batch_pl: x_batch_adv,
                                      label_batch_pl: y_batch,
@@ -252,7 +215,6 @@ def train():
                     feed_dict_test = {image_batch_pl: x_batch_nat_test,
                                       label_batch_pl: y_batch_test,
                                       is_training_pl: False}
-
                     x_batch_adv_test = get_PGD(sess, adv_grads, feed_dict_test, image_batch_pl)
                     feed_dict_test_adv = {image_batch_pl: x_batch_adv_test,
                                           label_batch_pl: y_batch_test,
