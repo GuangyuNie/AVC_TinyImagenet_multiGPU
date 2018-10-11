@@ -12,16 +12,19 @@ import numpy as np
 
 
 
-def get_PGD(sess, adv_grad, x_input_pl, y_input_pl, x_nat, y, epsilon=0.03, a=0.01, k=10, rand=True):
+def get_PGD(sess, adv_grad, feed_dict_pgd, x_input_pl, epsilon=0.03, a=0.01, k=10, rand=True):
   """Given a set of examples (x_nat, y), returns a set of adversarial
      examples within epsilon of x_nat in l_infinity norm."""
+
+  x_nat = feed_dict_pgd[x_input_pl]
   if rand:
     x = x_nat + np.random.uniform(-epsilon, epsilon, x_nat.shape)
   else:
     x = np.copy(x_nat)
 
   for i in range(k):
-    grad = sess.run(adv_grad, feed_dict={x_input_pl: x, y_input_pl: y})
+    feed_dict_pgd[x_input_pl] = x
+    grad = sess.run(adv_grad, feed_dict=feed_dict_pgd)
 
     x += a * np.sign(grad)
 

@@ -185,7 +185,7 @@ def _variable_with_weight_decay(name, shape, stddev, wd):
 
 
 from Xception import *
-def inference(images):
+def inference(images, is_training):
   """Build the Tiny ImageNet classifier model.
 
   Args:
@@ -199,7 +199,8 @@ def inference(images):
   # If we only ran this model on a single GPU, we could simplify this function
   # by replacing all instances of tf.get_variable() with tf.Variable().
   #
-  softmax_linear = XceptionModel(images, 200, is_training=True, data_format='channels_last')
+  resized_images = tf.image.resize_nearest_neighbor(images, (299, 299))
+  softmax_linear = XceptionModel(resized_images, 200, is_training=is_training, data_format='channels_last')
 
   return softmax_linear
 

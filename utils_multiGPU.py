@@ -2,7 +2,7 @@ import model
 import tensorflow as tf
 import re
 
-def tower_loss(scope, images, labels):
+def tower_loss(scope, images, labels, is_training=True):
   """Calculate the total loss on a single tower running the CIFAR model.
 
   Args:
@@ -15,7 +15,7 @@ def tower_loss(scope, images, labels):
   """
 
   # Build inference Graph.
-  logits = model.inference(images)
+  logits = model.inference(images, is_training=is_training)
   acc = tf.reduce_mean(tf.cast(tf.equal(tf.arg_max(logits, 1), labels), tf.float32))
 
   # Build the portion of the Graph calculating the losses. Note that we will
