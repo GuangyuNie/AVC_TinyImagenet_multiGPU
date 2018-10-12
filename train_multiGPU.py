@@ -79,7 +79,6 @@ def train():
         image_batch_pl = tf.placeholder(tf.float32,  shape = (batch_size, 64, 64, 3), name = 'input_images')
         label_batch_pl = tf.placeholder(tf.int64, shape=(batch_size), name='labels')
         is_training_pl = tf.placeholder(tf.bool, shape=(), name='labels')
-        lr = 1e-4
         opt = tf.train.AdamOptimizer(lr)
 
 
@@ -104,7 +103,7 @@ def train():
                         batchnorm_updates = tf.get_collection(tf.GraphKeys.UPDATE_OPS, scope=scope)
 
                         # Reuse variables for the next tower.
-                        # tf.get_variable_scope().reuse_variables()
+                        tf.get_variable_scope().reuse_variables()
 
                         # Calculate the gradients for the batch of data on this CIFAR tower.
                         grad_i = opt.compute_gradients(loss)
@@ -248,11 +247,12 @@ if __name__ == '__main__':
                                """and checkpoint.""")
     tf.app.flags.DEFINE_integer('max_epoch', 2000,
                                 """Number of batches to run.""")
-    tf.app.flags.DEFINE_integer('num_gpus', 4,
+    tf.app.flags.DEFINE_integer('num_gpus', 2,
                                 """How many GPUs to use.""")
     tf.app.flags.DEFINE_boolean('log_device_placement', False,
                                 """Whether to log device placement.""")
-    batch_size = 128  # split on 4 or 8 GPU, each GPU has 32 or 16
+    batch_size = 24  # split on 4 or 8 GPU, each GPU has 32 or 16
+    lr = 1e-4
 
     log_dir = './model_save_base_madry'
     if not os.path.exists(log_dir):
