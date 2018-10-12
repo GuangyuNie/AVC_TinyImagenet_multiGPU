@@ -88,32 +88,34 @@ def train():
         adv_grads = []
         accuracy =[]
         batch_size_i = batch_size // FLAGS.num_gpus
-        with tf.variable_scope(tf.get_variable_scope()) as scope:
-            for i in xrange(FLAGS.num_gpus):
-                with tf.device('/gpu:%d' % i):
-                    with tf.name_scope('%s_%d' % (model.TOWER_NAME, i)) as scope:
-                        # Calculate the loss for one tower of the CIFAR model. This function
-                        # constructs the entire CIFAR model but shares the variables across
-                        # all towers.
-                        image_batch_pl_i = image_batch_pl[i*batch_size_i:(i+1)*batch_size_i]
-                        label_batch_pl_i = label_batch_pl[i*batch_size_i:(i+1)*batch_size_i]
-                        loss, acc_i = tower_loss(scope, image_batch_pl_i, label_batch_pl_i, is_training_pl)
-                        adv_grad_i = tf.gradients(loss, image_batch_pl_i)[0]
+        i=0
+        with tf.name_scope('%s_%d' % (model.TOWER_NAME, i)) as scope:
+        # with tf.variable_scope(tf.get_variable_scope()) as scope:
+        #     for i in xrange(FLAGS.num_gpus):
+        #         with tf.device('/gpu:%d' % i):
+        #             with tf.name_scope('%s_%d' % (model.TOWER_NAME, i)) as scope:
+            # Calculate the loss for one tower of the CIFAR model. This function
+            # constructs the entire CIFAR model but shares the variables across
+            # all towers.
+            image_batch_pl_i = image_batch_pl[i*batch_size_i:(i+1)*batch_size_i]
+            label_batch_pl_i = label_batch_pl[i*batch_size_i:(i+1)*batch_size_i]
+            loss, acc_i = tower_loss(scope, image_batch_pl_i, label_batch_pl_i, is_training_pl)
+            adv_grad_i = tf.gradients(loss, image_batch_pl_i)[0]
 
 
-                        batchnorm_updates = tf.get_collection(tf.GraphKeys.UPDATE_OPS, scope=scope)
+            batchnorm_updates = tf.get_collection(tf.GraphKeys.UPDATE_OPS, scope=scope)
 
-                        # Reuse variables for the next tower.
-                        # tf.get_variable_scope().reuse_variables()
+            # Reuse variables for the next tower.
+            # tf.get_variable_scope().reuse_variables()
 
-                        # Calculate the gradients for the batch of data on this CIFAR tower.
-                        grad_i = opt.compute_gradients(loss)
+            # Calculate the gradients for the batch of data on this CIFAR tower.
+            grad_i = opt.compute_gradients(loss)
 
-                        # Keep track of the gradients across all towers.
-                        tower_grads.append(grad_i)
-                        # track all adversarial gradients, by Hope
-                        adv_grads.append(adv_grad_i)
-                        accuracy.append(acc_i)
+            # Keep track of the gradients across all towers.
+            tower_grads.append(grad_i)
+            # track all adversarial gradients, by Hope
+            adv_grads.append(adv_grad_i)
+            accuracy.append(acc_i)
 
         accuracy = tf.reduce_mean(accuracy)
         adv_grads = tf.concat(adv_grads, 0)
@@ -123,7 +125,7 @@ def train():
         apply_gradient_op = opt.apply_gradients(grads, global_step=global_step)
         batchnorm_updates_op = tf.group(*batchnorm_updates)
         train_op = tf.group(apply_gradient_op, batchnorm_updates_op)
-
+        #
         # ## SUMMARY
         # # Add a summary to track the learning rate.
         # summaries.append(tf.summary.scalar('learning_rate', lr))
@@ -186,7 +188,11 @@ def train():
                 feed_dict_adv = {image_batch_pl: x_batch_adv,
                                  label_batch_pl: y_batch,
                                  is_training_pl: True}
-                _, loss_value = sess.run([train_op, loss], feed_dict=feed_dict_adv)
+                feed_dict = {image_batch_pl: x_batch_nat,
+                             label_batch_pl: y_batch,
+                             is_training_pl: False}
+                # _, loss_value = sess.run([train_op, loss], feed_dict=feed_dict_adv)
+                loss_value = sess.run(loss, feed_dict=feed_dict)
 
                 if itr_i%10==0:
                     # output training
@@ -197,16 +203,16 @@ def train():
 
                 # output testing
                 if itr_i%100==0:
-                    feed_dict_train = {image_batch_pl: x_batch_nat,
-                                       label_batch_pl: y_batch,
-                                       is_training_pl: False}
-                    x_batch_adv = get_PGD(sess, adv_grads, feed_dict_train, image_batch_pl) # DICTIONARY IS PASSED VIA REFERENCE
-                    feed_dict_train_adv = {image_batch_pl: x_batch_adv,
-                                           label_batch_pl: y_batch,
-                                           is_training_pl: False}
-                    feed_dict_train = {image_batch_pl: x_batch_nat,
-                                       label_batch_pl: y_batch,
-                                       is_training_pl: False}
+                    feed_dict = {image_batch_pl: x_batch_nat,
+                                 label_batch_pl: y_batch,
+                                 is_training_pl: False}
+                    x_batch_adv = get_PGD(sess, adv_grads, feed_dict, image_batch_pl)
+                    feed_dict_adv = {image_batch_pl: x_batch_adv,
+                                     label_batch_pl: y_batch,
+                                     is_training_pl: False}
+                    feed_dict = {image_batch_pl: x_batch_nat,
+                                 label_batch_pl: y_batch,
+                                 is_training_pl: False}
 
                     testing_batch_i = np.random.choice(itr_per_epoch_test, 1)[0]  # randomly pick a batch for testing
                     x_batch_nat_test = test_images[testing_batch_i * batch_size:(1 + testing_batch_i) * batch_size]
@@ -222,7 +228,7 @@ def train():
                                       label_batch_pl: y_batch_test,
                                       is_training_pl: False}
 
-                    hist = log_output(hist, sess, accuracy, loss, feed_dict_train, feed_dict_train_adv, feed_dict_test, feed_dict_test_adv)
+                    hist = log_output(hist, sess, accuracy, loss, feed_dict, feed_dict_adv, feed_dict_test, feed_dict_test_adv)
                     np.save(os.path.join(log_dir, 'hist'), hist)
 
             if ep_i%10==0:
@@ -248,11 +254,11 @@ if __name__ == '__main__':
                                """and checkpoint.""")
     tf.app.flags.DEFINE_integer('max_epoch', 2000,
                                 """Number of batches to run.""")
-    tf.app.flags.DEFINE_integer('num_gpus', 4,
+    tf.app.flags.DEFINE_integer('num_gpus', 1,
                                 """How many GPUs to use.""")
     tf.app.flags.DEFINE_boolean('log_device_placement', False,
                                 """Whether to log device placement.""")
-    batch_size = 128  # split on 4 or 8 GPU, each GPU has 32 or 16
+    batch_size = 24  # split on 4 or 8 GPU, each GPU has 32 or 16
 
     log_dir = './model_save_base_madry'
     if not os.path.exists(log_dir):

@@ -9,12 +9,13 @@ from __future__ import print_function
 
 import tensorflow as tf
 import numpy as np
-
+import copy
 
 
 def get_PGD(sess, adv_grad, feed_dict_pgd, x_input_pl, epsilon=0.03, a=0.01, k=10, rand=True):
   """Given a set of examples (x_nat, y), returns a set of adversarial
      examples within epsilon of x_nat in l_infinity norm."""
+
 
   x_nat = feed_dict_pgd[x_input_pl]
   if rand:
