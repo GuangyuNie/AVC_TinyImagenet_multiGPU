@@ -178,11 +178,11 @@ def train():
 
                 x_batch_nat = train_images[itr_i * batch_size:(1 + itr_i) * batch_size]
                 y_batch = train_labels[itr_i * batch_size:(1 + itr_i) * batch_size]
-                feed_dict = {image_batch_pl: x_batch_nat,
-                             label_batch_pl: y_batch,
-                             is_training_pl: False}
-                x_batch_adv = get_PGD(sess, adv_grads, feed_dict, image_batch_pl)
-                feed_dict_adv = {image_batch_pl: x_batch_adv,
+                feed_dict_pgd = {image_batch_pl: x_batch_nat/255.,
+                                 label_batch_pl: y_batch,
+                                 is_training_pl: False}
+                x_batch_adv = get_PGD(sess, adv_grads, feed_dict_pgd, image_batch_pl)
+                feed_dict_adv = {image_batch_pl: x_batch_adv*255.,
                                  label_batch_pl: y_batch,
                                  is_training_pl: True}
                 _, loss_value = sess.run([train_op, loss], feed_dict=feed_dict_adv)
@@ -196,11 +196,11 @@ def train():
 
                 # output testing
                 if itr_i%100==0:
-                    feed_dict_train = {image_batch_pl: x_batch_nat,
-                                       label_batch_pl: y_batch,
-                                       is_training_pl: False}
-                    x_batch_adv = get_PGD(sess, adv_grads, feed_dict_train, image_batch_pl) # DICTIONARY IS PASSED VIA REFERENCE
-                    feed_dict_train_adv = {image_batch_pl: x_batch_adv,
+                    feed_dict_pgd = {image_batch_pl: x_batch_nat/255.,
+                                     label_batch_pl: y_batch,
+                                     is_training_pl: False}
+                    x_batch_adv = get_PGD(sess, adv_grads, feed_dict_pgd, image_batch_pl) # DICTIONARY IS PASSED VIA REFERENCE
+                    feed_dict_train_adv = {image_batch_pl: x_batch_adv*255.,
                                            label_batch_pl: y_batch,
                                            is_training_pl: False}
                     feed_dict_train = {image_batch_pl: x_batch_nat,
@@ -210,11 +210,11 @@ def train():
                     testing_batch_i = np.random.choice(itr_per_epoch_test, 1)[0]  # randomly pick a batch for testing
                     x_batch_nat_test = test_images[testing_batch_i * batch_size:(1 + testing_batch_i) * batch_size]
                     y_batch_test = test_labels[testing_batch_i * batch_size:(1 + testing_batch_i) * batch_size]
-                    feed_dict_test = {image_batch_pl: x_batch_nat_test,
+                    feed_dict_pgd = {image_batch_pl: x_batch_nat_test/255.,
                                       label_batch_pl: y_batch_test,
                                       is_training_pl: False}
-                    x_batch_adv_test = get_PGD(sess, adv_grads, feed_dict_test, image_batch_pl)
-                    feed_dict_test_adv = {image_batch_pl: x_batch_adv_test,
+                    x_batch_adv_test = get_PGD(sess, adv_grads, feed_dict_pgd, image_batch_pl)
+                    feed_dict_test_adv = {image_batch_pl: x_batch_adv_test*255.,
                                           label_batch_pl: y_batch_test,
                                           is_training_pl: False}
                     feed_dict_test = {image_batch_pl: x_batch_nat_test,
