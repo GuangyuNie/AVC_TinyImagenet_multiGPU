@@ -17,7 +17,7 @@ import tensorflow as tf
 from utils_multiGPU import *
 import model
 from pgd_attack import *
-
+DIST = 'Linf'
 
 def log_output(hist, sess, accuracy, loss, feed_dict, feed_dict_adv, feed_dict_test, feed_dict_test_adv):
     ## training
@@ -96,7 +96,7 @@ def train():
                         # all towers.
                         image_batch_pl_i = image_batch_pl[i*batch_size_i:(i+1)*batch_size_i]
                         label_batch_pl_i = label_batch_pl[i*batch_size_i:(i+1)*batch_size_i]
-                        loss, acc_i = tower_loss(scope, image_batch_pl_i, label_batch_pl_i, is_training_pl)
+                        loss, cw_loss, acc_i = tower_loss(scope, image_batch_pl_i, label_batch_pl_i, is_training_pl)
                         adv_grad_i = tf.gradients(loss, image_batch_pl_i)[0]
 
 
@@ -181,7 +181,7 @@ def train():
                 feed_dict_pgd = {image_batch_pl: x_batch_nat/255.,
                                  label_batch_pl: y_batch,
                                  is_training_pl: False}
-                x_batch_adv = get_PGD(sess, adv_grads, feed_dict_pgd, image_batch_pl)
+                x_batch_adv = get_PGD(sess, adv_grads, feed_dict_pgd, image_batch_pl, dist=DIST)
                 feed_dict_adv = {image_batch_pl: x_batch_adv*255.,
                                  label_batch_pl: y_batch,
                                  is_training_pl: True}
@@ -199,7 +199,7 @@ def train():
                     feed_dict_pgd = {image_batch_pl: x_batch_nat/255.,
                                      label_batch_pl: y_batch,
                                      is_training_pl: False}
-                    x_batch_adv = get_PGD(sess, adv_grads, feed_dict_pgd, image_batch_pl) # DICTIONARY IS PASSED VIA REFERENCE
+                    x_batch_adv = get_PGD(sess, adv_grads, feed_dict_pgd, image_batch_pl, dist=DIST) # DICTIONARY IS PASSED VIA REFERENCE
                     feed_dict_train_adv = {image_batch_pl: x_batch_adv*255.,
                                            label_batch_pl: y_batch,
                                            is_training_pl: False}
@@ -213,7 +213,7 @@ def train():
                     feed_dict_pgd = {image_batch_pl: x_batch_nat_test/255.,
                                       label_batch_pl: y_batch_test,
                                       is_training_pl: False}
-                    x_batch_adv_test = get_PGD(sess, adv_grads, feed_dict_pgd, image_batch_pl)
+                    x_batch_adv_test = get_PGD(sess, adv_grads, feed_dict_pgd, image_batch_pl, dist=DIST)
                     feed_dict_test_adv = {image_batch_pl: x_batch_adv_test*255.,
                                           label_batch_pl: y_batch_test,
                                           is_training_pl: False}
@@ -224,7 +224,7 @@ def train():
                     hist = log_output(hist, sess, accuracy, loss, feed_dict_train, feed_dict_train_adv, feed_dict_test, feed_dict_test_adv)
                     np.save(os.path.join(log_dir, 'hist'), hist)
 
-            if ep_i%10==0:
+            if ep_i%5==0:
                 saver.save(sess, os.path.join(log_dir, 'AVC_Madry_multiGPU_ep{}.ckpt'.format(ep_i)))
 
 

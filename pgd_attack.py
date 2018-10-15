@@ -11,11 +11,19 @@ import tensorflow as tf
 import numpy as np
 import copy
 
+def get_PGD(sess, adv_grad, feed_dict_pgd, x_input_pl, epsilon=0.1, a=0.002, k=50, rand=True, dist='Linf'):
+  if dist == 'Linf':
+    x = get_PGD_Linf(sess, adv_grad, feed_dict_pgd, x_input_pl, epsilon, a, k, rand)
+  elif dist == 'L2':
+    x = get_PGD_L2(sess, adv_grad, feed_dict_pgd, x_input_pl, epsilon, a, k, rand)
+  else:
+    print('not implemented')
+  return x
 
-def get_PGD(sess, adv_grad, feed_dict_pgd, x_input_pl, epsilon=0.03, a=0.01, k=10, rand=True):
+
+def get_PGD_Linf(sess, adv_grad, feed_dict_pgd, x_input_pl, epsilon, a, k, rand):
   """Given a set of examples (x_nat, y), returns a set of adversarial
      examples within epsilon of x_nat in l_infinity norm."""
-
 
   x_nat = feed_dict_pgd[x_input_pl]
   if rand:
@@ -24,119 +32,69 @@ def get_PGD(sess, adv_grad, feed_dict_pgd, x_input_pl, epsilon=0.03, a=0.01, k=1
     x = np.copy(x_nat)
 
   for i in range(k):
-    feed_dict_pgd[x_input_pl] = x
     grad = sess.run(adv_grad, feed_dict=feed_dict_pgd)
 
     x += a * np.sign(grad)
-
     x = np.clip(x, x_nat - epsilon, x_nat + epsilon)
-    x = np.clip(x, 0, 1) # ensure valid pixel range
+    x = np.clip(x, 0, 1)  # ensure valid pixel range
 
   return x
 
-class LinfPGDAttack:
-  def __init__(self, model, epsilon, k, a, random_start, loss_func):
-    """Attack parameter initialization. The attack performs k steps of
-       size a, while always staying within epsilon from the initial
-       point."""
-    self.model = model
-    self.epsilon = epsilon
-    self.k = k
-    self.a = a
-    self.rand = random_start
 
-    if loss_func == 'xent':
-      loss = model.xent
-    elif loss_func == 'cw':
-      label_mask = tf.one_hot(model.y_input,
-                              10,
-                              on_value=1.0,
-                              off_value=0.0,
-                              dtype=tf.float32)
-      correct_logit = tf.reduce_sum(label_mask * model.pre_softmax, axis=1)
-      wrong_logit = tf.reduce_max((1-label_mask) * model.pre_softmax, axis=1)
-      loss = -tf.nn.relu(correct_logit - wrong_logit + 50)
+def sphere_rand(input_size, epsilon):
+  '''
+  algrithm adapted from: https://math.stackexchange.com/questions/87230/picking-random-points-in-the-volume-of-sphere-with-uniform-probability
+  :param epsilon:
+  :return:
+  '''
+  bs = input_size[0]
+  img_size = input_size[1:]
+  x = []
+  for i in range(bs):
+    perturb = np.random.normal(0, 1, img_size)
+    norm = np.linalg.norm(np.reshape(perturb,[-1]),2)
+    U = np.random.uniform(0, 1, img_size)
+    U = np.power(U,  1/(img_size[0]*img_size[1]*img_size[2]))
+    perturb = perturb / norm * epsilon * U
+    x += [np.expand_dims(perturb,0)]
+  return  np.concatenate(x,0)
+
+
+def get_PGD_L2(sess, adv_grad, feed_dict_pgd, x_input_pl, epsilon, a, k, rand):
+  """Given a set of examples (x_nat, y), returns a set of adversarial
+     examples within epsilon of x_nat in l_infinity norm."""
+
+  x_nat = feed_dict_pgd[x_input_pl]
+  input_size = x_input_pl.get_shape().as_list()
+  bs = input_size[0]
+
+  if rand:
+    sphere_perturb = sphere_rand(input_size, np.random.uniform(0,epsilon))
+    # start from a random point inside L2 sphere
+    x = x_nat + sphere_perturb
+  else:
+    x = np.copy(x_nat)
+
+  for i in range(k):
+    grad = sess.run(adv_grad, feed_dict=feed_dict_pgd)
+
+    if 1:
+      # attack normalize
+      att_norm2 = np.linalg.norm(np.reshape(grad, [bs, -1]), ord=2, axis=1)
+      x_i = x + a * grad/np.reshape(att_norm2, [bs,1,1,1]) #perturb along the spherical projection with step size a
+      # adv img normalize
+      x_diff = x_i - x_nat #accumulated perturbation
+      img_norm2 = np.linalg.norm(np.reshape(x_diff, [bs, -1]), ord=2, axis=1)
+      # bounded_norm = np.clip(img_norm2, 0 ,epsilon)
+      ratio = np.asarray([img_norm2[i] if img_norm2[i]<epsilon else epsilon for i in range(bs)])#clip accumulated perturbation inside sphere radius epsilon
+      x = x_nat + x_diff/np.reshape(img_norm2,[bs,1,1,1]) * np.reshape(ratio,[bs,1,1,1])
+      # ensure valid pixel range
+      x = np.clip(x, 0, 1)
     else:
-      print('Unknown loss function. Defaulting to cross-entropy')
-      loss = model.xent
+      # attack normalize
+      att_norm2 = np.linalg.norm(np.reshape(grad, [bs, -1]), ord=2, axis=1)
+      x_i = x + epsilon * grad / np.reshape(att_norm2, [bs, 1, 1, 1])  # perturb along the spherical projection with step size a
+      # ensure valid pixel range
+      x = np.clip(x_i, 0, 1)
 
-    self.grad = tf.gradients(loss, model.x_input)[0]
-
-  def perturb(self, x_nat, y, sess):
-    """Given a set of examples (x_nat, y), returns a set of adversarial
-       examples within epsilon of x_nat in l_infinity norm."""
-    if self.rand:
-      x = x_nat + np.random.uniform(-self.epsilon, self.epsilon, x_nat.shape)
-    else:
-      x = np.copy(x_nat)
-
-    for i in range(self.k):
-      grad = sess.run(self.grad, feed_dict={self.model.x_input: x,
-                                            self.model.y_input: y})
-
-      x += self.a * np.sign(grad)
-
-      x = np.clip(x, x_nat - self.epsilon, x_nat + self.epsilon) 
-      x = np.clip(x, 0, 1) # ensure valid pixel range
-
-    return x
-
-
-if __name__ == '__main__':
-  import json
-  import sys
-  import math
-
-  from tensorflow.examples.tutorials.mnist import input_data
-
-  from model import Model
-
-  with open('config.json') as config_file:
-    config = json.load(config_file)
-
-  model_file = tf.train.latest_checkpoint(config['model_dir'])
-  if model_file is None:
-    print('No model found')
-    sys.exit()
-
-  model = Model()
-  attack = LinfPGDAttack(model,
-                         config['epsilon'],
-                         config['k'],
-                         config['a'],
-                         config['random_start'],
-                         config['loss_func'])
-  saver = tf.train.Saver()
-
-  mnist = input_data.read_data_sets('MNIST_data', one_hot=False)
-
-  with tf.Session() as sess:
-    # Restore the checkpoint
-    saver.restore(sess, model_file)
-
-    # Iterate over the samples batch-by-batch
-    num_eval_examples = config['num_eval_examples']
-    eval_batch_size = config['eval_batch_size']
-    num_batches = int(math.ceil(num_eval_examples / eval_batch_size))
-
-    x_adv = [] # adv accumulator
-
-    print('Iterating over {} batches'.format(num_batches))
-
-    for ibatch in range(num_batches):
-      bstart = ibatch * eval_batch_size
-      bend = min(bstart + eval_batch_size, num_eval_examples)
-      print('batch size: {}'.format(bend - bstart))
-
-      x_batch = mnist.test.images[bstart:bend, :]
-      y_batch = mnist.test.labels[bstart:bend]
-
-      x_batch_adv = attack.perturb(x_batch, y_batch, sess)
-
-      x_adv.append(x_batch_adv)
-
-    print('Storing examples')
-    path = config['store_adv_path']
-    x_adv = np.concatenate(x_adv, axis=0)
-    np.save(path, x_adv)
-    print('Examples stored in {}'.format(path))
+  return x

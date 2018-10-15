@@ -131,6 +131,16 @@ def loss(logits, labels):
   cross_entropy_mean = tf.reduce_mean(cross_entropy, name='cross_entropy')
   tf.add_to_collection('losses', cross_entropy_mean)
 
+  label_mask = tf.one_hot(labels,
+                          200,
+                          on_value=1.0,
+                          off_value=0.0,
+                          dtype=tf.float32)
+  correct_logit = tf.reduce_sum(label_mask * logits, axis=1)
+  wrong_logit = tf.reduce_max((1 - label_mask) * logits, axis=1)
+  cw_loss = -tf.nn.relu(correct_logit - wrong_logit + 50)
+  tf.add_to_collection('cw_losses', cw_loss)
+
   # The total loss is defined as the cross entropy loss plus all of the weight
   # decay terms (L2 loss).
   return tf.add_n(tf.get_collection('losses'), name='total_loss')

@@ -24,6 +24,7 @@ def tower_loss(scope, images, labels, is_training=True):
 
   # Assemble all of the losses for the current tower only.
   losses = tf.get_collection('losses', scope)
+  cw_losses = tf.get_collection('cw_losses', scope)
 
   # Calculate the total loss for the current tower.
   total_loss = tf.add_n(losses, name='total_loss')
@@ -36,7 +37,7 @@ def tower_loss(scope, images, labels, is_training=True):
     loss_name = re.sub('%s_[0-9]*/' % model.TOWER_NAME, '', l.op.name)
     tf.summary.scalar(loss_name, l)
 
-  return total_loss, acc
+  return total_loss, cw_losses, acc
 
 
 def average_gradients(tower_grads):
