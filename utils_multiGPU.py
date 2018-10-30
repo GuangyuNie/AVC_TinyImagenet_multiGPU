@@ -1,6 +1,7 @@
 import model
 import tensorflow as tf
 import re
+import numpy as np
 
 def tower_loss(scope, images, labels, is_training=True):
   """Calculate the total loss on a single tower running the CIFAR model.
@@ -14,13 +15,22 @@ def tower_loss(scope, images, labels, is_training=True):
      Tensor of shape [] containing the total loss for a batch of data
   """
 
-  # Build inference Graph.
-  logits = model.inference(images, is_training=is_training)
-  acc = tf.reduce_mean(tf.cast(tf.equal(tf.arg_max(logits, 1), labels), tf.float32))
-
   # Build the portion of the Graph calculating the losses. Note that we will
   # assemble the total_loss using a custom function below.
-  _ = model.loss(logits, labels)
+  resized_images = tf.image.resize_nearest_neighbor(images, (299, 299))
+
+  acc = []
+  loc = np.arange(100, 200, 10, dtype='int64')
+  loc = [(i, j) for i in loc for j in loc]
+  for i, loc_i in enumerate(loc):
+    loc_x, loc_y = loc_i
+    x_crop_i = resized_images[:, loc_x - 100:loc_x + 100, loc_y - 100:loc_y + 100, :]
+    logits = model.inference(x_crop_i, is_training=is_training)
+    _ = model.loss(logits, labels)
+    acc_i = tf.reduce_mean(tf.cast(tf.equal(tf.arg_max(logits, 1), labels), tf.float32))
+    acc += [acc_i]
+    tf.get_variable_scope().reuse_variables()
+  mean_acc = tf.reduce_mean(acc)
 
   # Assemble all of the losses for the current tower only.
   losses = tf.get_collection('losses', scope)
@@ -37,7 +47,7 @@ def tower_loss(scope, images, labels, is_training=True):
     loss_name = re.sub('%s_[0-9]*/' % model.TOWER_NAME, '', l.op.name)
     tf.summary.scalar(loss_name, l)
 
-  return total_loss, cw_losses, acc
+  return total_loss, cw_losses, mean_acc
 
 
 def average_gradients(tower_grads):

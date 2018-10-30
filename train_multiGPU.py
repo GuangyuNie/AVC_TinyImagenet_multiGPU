@@ -155,7 +155,7 @@ def train():
         not_restore = [str(g)+':0' for g in g_list if 'xxx' in g]
         not_resotre = not_restore.append('global_step:0')
         restore_list = [v for v in tf.global_variables() if v.name not in not_restore]
-        saver = tf.train.Saver(var_list = restore_list)
+        saver = tf.train.Saver(var_list = restore_list, max_to_keep=10)
         saver.restore(sess, "/home/hope-yao/Documents/models/tutorials/image/AVC_Madry_multiGPU_pretrain/model_save_base_final/center_loss.ckpt")
 
         ## LOAD DATA
@@ -170,7 +170,7 @@ def train():
                 'test_acc': [],
                 'test_adv_loss': [],
                 'test_adv_acc': []}
-
+ 
         ## START TRAINING
         for ep_i in xrange(FLAGS.max_epoch):
             for itr_i in range(itr_per_epoch):
@@ -224,8 +224,8 @@ def train():
                     hist = log_output(hist, sess, accuracy, loss, feed_dict_train, feed_dict_train_adv, feed_dict_test, feed_dict_test_adv)
                     np.save(os.path.join(log_dir, 'hist'), hist)
 
-            if ep_i%5==0:
-                saver.save(sess, os.path.join(log_dir, 'AVC_Madry_multiGPU_ep{}.ckpt'.format(ep_i)))
+                if (5*itr_i)%itr_per_epoch==0:
+                    saver.save(sess, os.path.join(log_dir, 'AVC_Madry_multiGPU_itr_i{}.ckpt'.format(itr_i)))
 
 
 # if step % 100 == 0:
@@ -245,13 +245,13 @@ if __name__ == '__main__':
     tf.app.flags.DEFINE_string('train_dir', '/tmp/cifar10_train',
                                """Directory where to write event logs """
                                """and checkpoint.""")
-    tf.app.flags.DEFINE_integer('max_epoch', 2000,
+    tf.app.flags.DEFINE_integer('max_epoch', 20,
                                 """Number of batches to run.""")
-    tf.app.flags.DEFINE_integer('num_gpus', 2,
+    tf.app.flags.DEFINE_integer('num_gpus', 4,
                                 """How many GPUs to use.""")
     tf.app.flags.DEFINE_boolean('log_device_placement', False,
                                 """Whether to log device placement.""")
-    batch_size = 24  # split on 4 or 8 GPU, each GPU has 32 or 16
+    batch_size = 32  # split on 4 or 8 GPU, each GPU has 32 or 16
     lr = 1e-4
 
     log_dir = './model_save_base_madry'

@@ -11,7 +11,7 @@ import tensorflow as tf
 import numpy as np
 import copy
 
-def get_PGD(sess, adv_grad, feed_dict_pgd, x_input_pl, epsilon=0.1, a=0.002, k=50, rand=True, dist='Linf'):
+def get_PGD(sess, adv_grad, feed_dict_pgd, x_input_pl, epsilon=0.2, a=0.03, k=10, rand=True, dist='Linf'):
   if dist == 'Linf':
     x = get_PGD_Linf(sess, adv_grad, feed_dict_pgd, x_input_pl, epsilon, a, k, rand)
   elif dist == 'L2':
@@ -59,7 +59,7 @@ def sphere_rand(input_size, epsilon):
     x += [np.expand_dims(perturb,0)]
   return  np.concatenate(x,0)
 
-
+ 
 def get_PGD_L2(sess, adv_grad, feed_dict_pgd, x_input_pl, epsilon, a, k, rand):
   """Given a set of examples (x_nat, y), returns a set of adversarial
      examples within epsilon of x_nat in l_infinity norm."""
