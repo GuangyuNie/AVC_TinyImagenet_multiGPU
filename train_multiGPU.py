@@ -14,7 +14,7 @@ import time
 import numpy as np
 from six.moves import xrange  # pylint: disable=redefined-builtin
 import tensorflow as tf
-from utils_multiGPU import *
+from utils_multiGPU import 
 import model
 from pgd_attack import *
 DIST = 'Linf'
@@ -156,7 +156,7 @@ def train():
         not_resotre = not_restore.append('global_step:0')
         restore_list = [v for v in tf.global_variables() if v.name not in not_restore]
         saver = tf.train.Saver(var_list = restore_list, max_to_keep=10)
-        saver.restore(sess, "/home/hope-yao/Documents/models/tutorials/image/AVC_Madry_multiGPU_pretrain/model_save_base_final/center_loss.ckpt")
+        saver.restore(sess, "./model_save/center_loss.ckpt")
 
         ## LOAD DATA
         train_images, train_labels, test_images, test_labels = load_data()

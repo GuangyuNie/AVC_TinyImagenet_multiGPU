@@ -17,14 +17,18 @@ def tower_loss(scope, images, labels, is_training=True):
 
   # Build the portion of the Graph calculating the losses. Note that we will
   # assemble the total_loss using a custom function below.
-  resized_images = tf.image.resize_nearest_neighbor(images, (299, 299))
+
+  image_size = 300
+  crop_size = 200
+  edge_size = image_size-crop_size
+  resized_images = tf.image.resize_nearest_neighbor(images, (image_size, image_size))
 
   acc = []
-  loc = np.arange(100, 200, 10, dtype='int64')
+  loc = np.arange(edge_size, crop_size, 10, dtype='int64')
   loc = [(i, j) for i in loc for j in loc]
   for i, loc_i in enumerate(loc):
     loc_x, loc_y = loc_i
-    x_crop_i = resized_images[:, loc_x - 100:loc_x + 100, loc_y - 100:loc_y + 100, :]
+    x_crop_i = resized_images[:, loc_x - edge_size:loc_x + edge_size, loc_y - edge_size:loc_y + edge_size, :]
     logits = model.inference(x_crop_i, is_training=is_training)
     _ = model.loss(logits, labels)
     acc_i = tf.reduce_mean(tf.cast(tf.equal(tf.arg_max(logits, 1), labels), tf.float32))
